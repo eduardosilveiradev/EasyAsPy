@@ -1,0 +1,13 @@
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'newProject'                  __init__.py | Main | newProject
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'parsecfg'                  __init__.py | Main | newProject | parsecfg
+[06:42:21 PM February 03 2024 Saturday] | Function completed with return '{'libraries': ['colorama']}'                  __init__.py | Main | newProject | parsecfg
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'install'                  __init__.py | Main | newProject | install
+[06:42:21 PM February 03 2024 Saturday] | Function completed with return 'None'                  __init__.py | Main | newProject | install
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'grabDefault'                  __init__.py | Main | newProject | grabDefault
+[06:42:21 PM February 03 2024 Saturday] | Function completed with return 'True'                  __init__.py | Main | newProject | grabDefault
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'grabPath'                  __init__.py | Main | newProject | grabPath
+[06:42:21 PM February 03 2024 Saturday] | Function completed with return 'C:\EasyAsPy\RESOURCES\defaultprojectcli.py'                  __init__.py | Main | newProject | grabPath
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'getPrjctInfo'                  __init__.py | Main | newProject | getPrjctInfo
+[06:42:21 PM February 03 2024 Saturday] | Function completed with return 'Project name: testPython version: 3.12.1 '                  __init__.py | Main | newProject | getPrjctInfo
+[06:42:21 PM February 03 2024 Saturday] | Executing function 'grabPath'                  __init__.py | Main | newProject | grabPath
+[06:42:21 PM February 03 2024 Saturday] | Function completed with return 'C:\EasyAsPy\RESOURCES\runner.py'                  __init__.py | Main | newProject | grabPath
