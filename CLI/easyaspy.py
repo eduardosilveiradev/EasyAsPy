@@ -6,7 +6,7 @@ import shutil
 import inspect
 import logging as lg
 import loading
-from pylogger import logdec
+from pylogger import logdec, clear
 from pylogger import init as initpylogger
 from typing import Any
 from colorama import Fore, Back, init
@@ -18,6 +18,7 @@ This is an internal library DO NOT USE unless you want all your projects to brea
 '''
 
 defaultpath = __file__.replace("CLI\\easyaspy.py", "")
+clear(False)
 @logdec
 def grabPath(id):
   return defaultpath+f"RESOURCES\\{id}.py"
