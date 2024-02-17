@@ -7,6 +7,7 @@ import inspect
 import stat
 import logging as lg
 import loading
+from pynput import keyboard
 from pylogger import logdec, clear
 from pylogger import init as initpylogger
 from typing import Any
@@ -198,6 +199,16 @@ def newProject(args):
       raise UnknownOptionError("Unknown option for VS Code workspace generation")
 
 def deletePrjct(args):
+  delete = input("Are you sure you want to delete(Y/n)? ")
+  delete = delete.lower()
+  if delete != "y":
+    exit()
+  while delete != args.folder:
+    cls()
+    delete = input("Input your projects name to delete: ")
+    if delete != args.folder:
+      rprint("error", "Incorrect name try again")
+      input()
   if os.path.exists(args.folder):
     shutil.rmtree(args.folder, onerror = rmv_hdn_fl)
     rprint("info", f"Project {args.folder} deleted")
