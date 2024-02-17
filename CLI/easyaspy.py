@@ -4,6 +4,7 @@ import sys
 import json
 import shutil
 import inspect
+import stat
 import logging as lg
 import loading
 from pylogger import logdec, clear
@@ -19,6 +20,14 @@ This is an internal library DO NOT USE unless you want all your projects to brea
 
 defaultpath = __file__.replace("CLI\\easyaspy.py", "")
 clear(False)
+
+@logdec
+def rmv_hdn_fl(func, path, exc_info):
+    # path contains the path of the file that couldn't be removed
+    # let's just assume that it's read-only and unlink it.
+    os.chmod(path, stat.S_IWRITE)
+    os.unlink(path)
+  
 @logdec
 def grabPath(id):
   return defaultpath+f"RESOURCES\\{id}.py"
@@ -190,7 +199,7 @@ def newProject(args):
 
 def deletePrjct(args):
   if os.path.exists(args.folder):
-    os.remove(args.folder)
+    shutil.rmtree(args.folder, onerror = rmv_hdn_fl)
     rprint("info", f"Project {args.folder} deleted")
   else:
     rprint("error", f"Project {args.folder} does not exist")
