@@ -209,6 +209,7 @@ def deletePrjct(args):
     if delete != args.folder:
       rprint("error", "Incorrect name try again")
       input()
+  cls()
   if os.path.exists(args.folder):
     shutil.rmtree(args.folder, onerror = rmv_hdn_fl)
     rprint("info", f"Project {args.folder} deleted")
