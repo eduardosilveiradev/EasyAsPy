@@ -68,7 +68,7 @@ class UnknownOptionError(NameError):
   def __call__(self, *args: Any, **kwds: Any) -> Any:
     return super().__call__(*args, **kwds)
 
-def rprint(mode: str, content: str):
+def rio(mode: str, content: str):
   match mode.lower():
     case "info":
       content = content.replace("\n", f"\n{Back.GREEN}{Fore.BLACK} INFO {Fore.RESET+Back.RESET} ")
@@ -82,8 +82,10 @@ def rprint(mode: str, content: str):
       content = content.replace("\n", f"\n{Back.YELLOW}{Fore.BLACK} FAULT {Fore.RESET+Back.RESET} ")
       print(f"{Back.YELLOW}{Fore.BLACK} FAULT {Fore.RESET+Back.RESET} "+content)
       return
+    case "input":
+      return input(f"{Back.YELLOW+Fore.BLACK} INPUT {Back.RESET+Fore.RESET} {content}")
     case _:
-      raise UnknownOptionError("That rprint mode does not exist")
+      raise UnknownOptionError("That rio mode does not exist")
 
 @logdec
 def parsecfg(file) -> str:
@@ -96,7 +98,7 @@ def parsecfg(file) -> str:
     parsed = json.loads(content)
     return parsed
   except Exception as e:
-    rprint("Error", "Exception: "+e)
+    rio("Error", "Exception: "+e)
  
 @logdec
 def install(lib: str, dest: str):
@@ -118,7 +120,7 @@ def newProject(args):
     paths = os.listdir(path)
     for e  in paths:
       if e == i:
-        rprint("info", "Found libary: "+e)
+        rio("info", "Found libary: "+e)
         libraries.append(e)
       else:
         continue
@@ -127,7 +129,7 @@ def newProject(args):
       libs += item+', '
     else:
       libs += item
-  rprint("info", "Attempting to install collected libraries: "+libs)
+  rio("info", "Attempting to install collected libraries: "+libs)
   path = sys.path
   path = path[5]
   try:
@@ -137,24 +139,24 @@ def newProject(args):
   for item in libraries:
     if item not in os.listdir(args.folder+"/libraries") and args.r is None:
       install(item, args.folder)
-      rprint("info", f"Installed library {item}")
+      rio("info", f"Installed library {item}")
     elif item in os.listdir(args.folder+"/libraries") and args.r is None:
-      rprint("fault", f"Library {item} already installed. Skipping...\nRun 'python -m easyaspy new config.json {args.folder} -r' to reinstall libraries")
+      rio("fault", f"Library {item} already installed. Skipping...\nRun 'python -m easyaspy new {args.cfg} {args.folder} -r' to reinstall libraries")
     else:
       install(item, args.folder)
-      rprint("info", f"Reinstalled library {item}")
+      rio("info", f"Reinstalled library {item}")
   try:
     os.mkdir(args.folder)
     createmsg = f"Project {args.folder} generated"
-    rprint("info", createmsg)
+    rio("info", createmsg)
   except FileExistsError:
     createmsg = f"Project {args.folder} regenerated"
     if not grabDefault("regen_project"):
-      rprint("error", f"Project '{args.folder}' already exists. Regenerating will NOT clear project content")
+      rio("error", f"Project '{args.folder}' already exists. Regenerating will NOT clear project content")
       proceed = input(f"{Fore.BLACK+Back.BLUE} INPUT {Fore.RESET+Back.RESET} Proceed(Y/n/default)? ")
       match proceed.lower():
         case "y":
-          rprint("info", createmsg)
+          rio("info", createmsg)
         case "n":
           exit()
         case "default":
@@ -165,13 +167,13 @@ def newProject(args):
             with open("defaults.json", "w") as f:
               f.write(json.dumps(parsed))
           except OSError or FileNotFoundError:
-            rprint("error", "Could not add default")
+            rio("error", "Could not add default")
             return
-          rprint("info", "Added default")
+          rio("info", "Added default")
         case _:
           raise UnknownOptionError("Unknown option for project regeneration")
     else:
-      rprint("info", createmsg)
+      rio("info", createmsg)
   with open(args.folder+"/mngprjct.py", 't+w') as f:
     f.write(Resources.getresource("defaultprojectcli").replace("gid912", args.folder))
   with open(args.folder+"/prjctinfo.log", "t+w") as f:
@@ -181,40 +183,40 @@ def newProject(args):
   except FileExistsError:
     pass
   with open(os.path.join(args.folder, "resources")+"\\runner.py", 't+w') as f:
-    f.write(Resources.getresource("runner").replace("gid912", args.folder).replace('"gid102"', inspect.getsource(rprint)+"\n"+inspect.getsource(UnknownOptionError)))
-  codeworkspace = input("Would you like a VS Code workspace(Y/n)? ")
+    f.write(Resources.getresource("runner").replace("gid912", args.folder).replace('"gid102"', inspect.getsource(rio)+"\n"+inspect.getsource(UnknownOptionError)))
+  codeworkspace = input(f"{Back.YELLOW+Fore.BLACK} INPUT {Back.RESET+Fore.RESET} Would you like a VS Code workspace(Y/n)? ")
   cls()
   match codeworkspace.lower():
     case "y":
-      rprint("info", "Attempting Code workspace generation")
+      rio("info", "Attempting Code workspace generation")
       with open(os.path.join(args.folder, "codeworkspace.code-workspace"), "t+w") as f:
         f.write(Resources.getresource("codeworkspace.code-workspace").replace("gid912", args.folder))
-      rprint("info", "Completed workspace generation")
+      rio("info", "Completed workspace generation")
       exit()
     case "n":
       cls()
-      rprint("info", "Will not generate")
+      rio("info", "Will not generate")
       exit()
     case _:
       raise UnknownOptionError("Unknown option for VS Code workspace generation")
 
 def deletePrjct(args):
-  delete = input("Are you sure you want to delete(Y/n)? ")
+  delete = rio("input", "Are you sure you want to delete(Y/n)? ")
   delete = delete.lower()
   if delete != "y":
     exit()
   while delete != args.folder:
     cls()
-    delete = input("Input your projects name to delete: ")
+    delete = rio("input", "Input your projects name to delete: ")
     if delete != args.folder:
-      rprint("error", "Incorrect name try again")
+      rio("error", "Incorrect name try again")
       input()
   cls()
   if os.path.exists(args.folder):
     shutil.rmtree(args.folder, onerror = rmv_hdn_fl)
-    rprint("info", f"Project {args.folder} deleted")
+    rio("info", f"Project {args.folder} deleted")
   else:
-    rprint("error", f"Project {args.folder} does not exist")
+    rio("error", f"Project {args.folder} does not exist")
 
 
 def main():
