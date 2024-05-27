@@ -1,5 +1,6 @@
 {
     "libraries": [
-        "colorama"
+        "colorama",
+        "pylogger"
     ]
 }
