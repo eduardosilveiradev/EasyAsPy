@@ -1,9 +1,12 @@
-'''
+"""
 A simple logging library.
 Made with python on 11/21/21
-'''
+"""
+
 import pylogger.operators as op
-class Logger():
+
+
+class Logger:
     def init(self, lf: str, prcsname: str) -> None:
         """
         Creates global variables for your logger
@@ -14,17 +17,18 @@ class Logger():
         """
         import os
         import inspect
-        cls = lambda: os.system('cls' if os.name == 'nt' else 'clear')
+
+        cls = lambda: os.system("cls" if os.name == "nt" else "clear")
         self.rtrns = []
         self.processname = prcsname
         self.logfile = lf
-        if __name__ != '__main__':
+        if __name__ != "__main__":
             for frame in inspect.stack()[1:]:
-                if frame.filename[0] != '<':
+                if frame.filename[0] != "<":
                     path = frame.filename
                     break
         self.filename = path.rsplit("\\")
-        self.filename = self.filename[len(self.filename)-1]
+        self.filename = self.filename[len(self.filename) - 1]
 
     def logdec(self, func) -> str:
         """
@@ -37,6 +41,7 @@ class Logger():
             str: Output of `func`
         """
         from functools import wraps
+
         @wraps(func)
         def wrapperl(*args, **kwargs):
             self.log(f"Executing function '{func.__name__}'")
@@ -44,36 +49,45 @@ class Logger():
             rtrn = func(*args, **kwargs)
             self.log(f"Function completed with return '{rtrn}'")
             return rtrn
+
         return wrapperl
 
     def log(self, *_log: object) -> None:
-        '''
-        Function for logging.                                
+        """
+        Function for logging.
 
-        Usage(example):                                
+        Usage(example):
         log("Example log")
         Uses predetermined time code.
         Example of time code: [07:23:22 PM January 09      2024 Tuesday]
-        '''
+        """
         __log = ""
         for i in _log:
             __log += i
-        if ':' in self.logfile:
+        if ":" in self.logfile:
             # import time
             from time import strftime
+
             # create time string
             logtime = strftime("[%I:%M:%S %p %B %d      %Y %A]")
             # open file for log
             with open(self.logfile, "a") as logging:
                 # write log with formatting
-                logging.write(f"From '{self.filename} | {self.processname}' at {logtime}               {__log}\n")
+                logging.write(
+                    f"From '{self.filename} | {self.processname}' at {logtime}               {__log}\n"
+                )
         else:
             import os
+
             os.system("cls")
-            print("ERROR CODE: 543. Warning log file will not enter the desired directory as you did not include the full file path inside of 'LOGFILE'")
+            print(
+                "ERROR CODE: 543. Warning log file will not enter the desired directory as you did not include the full file path inside of 'LOGFILE'"
+            )
             exit()
 
-    def clear(self, log: str, logornot: bool | None=True, ask: bool | None=True) -> None:
+    def clear(
+        self, log: str, logornot: bool | None = True, ask: bool | None = True
+    ) -> None:
         """Clears logfile
 
         Args:
@@ -82,22 +96,28 @@ class Logger():
             ask (bool): Ask for user input. Defaults to True.
         """
         from time import strftime
+
         logtime = strftime("[%Y %A %B %d %I:%M:%S %p]")
         # neccesary librarys
         import os
         from time import strftime
         import time
+
         if ask == True:
             # ask for clear
             os.system("cls")
-            yesorno = input(f"Do you really want to clear the log file({logfile})?: ")
+            yesorno = input(
+                f"Do you really want to clear the log file({self.logfile})?: "
+            )
             if yesorno == "Y" or yesorno == "y":
                 # open file for clear
                 with open(self.logfile, "w") as logging:
                     logtime = strftime("[%Y %A %B %d %I:%M:%S %p]")
                     # write reason
                     if "Y" in logornot or "y" in logornot:
-                        logging.write(f"File cleared manually at {logtime} with clear reason: {log}\n")
+                        logging.write(
+                            f"File cleared manually at {logtime} with clear reason: {log}\n"
+                        )
                     else:
                         logging.write("")
                         os.system("cls")
@@ -122,24 +142,24 @@ class Logger():
         # open file for seperation
         with open(self.logfile, "a") as logging:
             # get amount of seperations
-            a=amount
+            a = amount
             # for loop through seperations
             for i in range(a):
                 logging.write("\n")
 
     def clearlastline(self) -> None:
-            'Clears last line of inputted file. Example: clearlastline()'
-            # list to store file lines
-            lines = []
-            # read file
-            with open(self.logfile, 'r') as fp:
-                # read an store all lines into list
-                lines = fp.readlines()
-                  # Write file
-                with open(logfile, 'w') as fp:
-                    # iterate each line
-                    for number, line in enumerate(lines):
-                        # note list index starts from 0
-                        length=len(lines)
-                        if number not in [length-1]:
-                            fp.write(line)
+        "Clears last line of inputted file. Example: clearlastline()"
+        # list to store file lines
+        lines = []
+        # read file
+        with open(self.logfile, "r") as fp:
+            # read an store all lines into list
+            lines = fp.readlines()
+            # Write file
+            with open(logfile, "w") as fp:
+                # iterate each line
+                for number, line in enumerate(lines):
+                    # note list index starts from 0
+                    length = len(lines)
+                    if number not in [length - 1]:
+                        fp.write(line)

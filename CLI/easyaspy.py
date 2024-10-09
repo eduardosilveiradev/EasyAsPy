@@ -254,6 +254,10 @@ def deletePrjct(args):
     delete = delete.lower()
     if delete != "y":
         exit()
+    delete = rio("input", "Are you really sure you want to delete(Y/n)? ")
+    delete = delete.lower()
+    if delete != "y":
+        exit()
     while delete != args.folder:
         cls()
         delete = rio("input", "Input your projects name to delete: ")

@@ -15,14 +15,14 @@ for i in _dirs:
     dirs += f"{_dirs.index(i)+1}. " + i + "\\"
 
 cls()
-rprint("info", f"Found existing directories in project folder")
+rio("info", f"Found existing directories in project folder")
 print("\n"+" Directories ".center(columns, "=")+f"\n{"\n".join(dirs.split("\\"))}")
 print(" Directories ".center(columns, "=")+"\n")
-rprint("info", "Locating 'main.py'...")
+rio("info", "Locating 'main.py'...")
 if os.path.exists("../gid912/main.py"):
-    rprint("info", "Located 'main.py'")
+    rio("info", "Located 'main.py'")
 else:
-    rprint("error", "Could not find 'main.py'. Exiting...")
+    rio("error", "Could not find 'main.py'. Exiting...")
     exit()
 run = input("Run(Y/n)? ")
 match run.lower():
@@ -30,10 +30,10 @@ match run.lower():
         cls()
         os.system("python ../gid912/main.py")
         print()
-        rprint("info", "Process finished")
+        rio("info", "Process finished")
     case "n":
         cls()
-        rprint("info", "Will not run")
+        rio("info", "Will not run")
         exit()
     case _:
         cls()
