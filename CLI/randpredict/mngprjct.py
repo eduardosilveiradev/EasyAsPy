@@ -25,7 +25,7 @@ def parsermanager(args):
     match args.command:
         case "compile":
             try:
-                compilestring = f"pyinstaller --onefile {__file__.replace('gid912/mngprjct.py', '')}"
+                compilestring = f"pyinstaller --onefile {__file__.replace('randpredict/mngprjct.py', '')}"
                 os.system(compilestring)
             except Exception as e:
                 rprint("error", f"Exception: {e}")
@@ -37,7 +37,7 @@ def parsermanager(args):
             rprint("error", "Unknown command")
 
 
-def grabinfo(args, project="gid912"):
+def grabinfo(args, project="randpredict"):
     print(open("prjctinfo.log", "r").read())
 
 

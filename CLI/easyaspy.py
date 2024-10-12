@@ -134,13 +134,15 @@ def newProject(args):
     parsedcfg = parsecfg(args.cfg)
     libs = ""
     libraries = []
+    alllibraries = []
     for i in parsedcfg["libraries"]:
         path = sys.path
         path = path[5]
         paths = os.listdir(path)
+        rio("info", "Found library: " + i)
+        alllibraries.append(i)
         for e in paths:
             if e == i:
-                rio("info", "Found libary: " + e)
                 libraries.append(e)
             else:
                 continue
@@ -159,6 +161,10 @@ def newProject(args):
         )
     except FileExistsError:
         pass
+    rio(
+        "info",
+        "Note: Some libraries may be built-in to Python so they were not installed",
+    )
     for item in libraries:
         if item not in os.listdir(args.folder + "/libraries") and args.r is None:
             install(item, args.folder)
@@ -209,6 +215,14 @@ def newProject(args):
         f.write(
             Resources.getresource("defaultprojectcli").replace("gid912", args.folder)
         )
+    with open(args.folder + "/main.py", "t+w") as f:
+        parsedimports = ""
+        for item in alllibraries:
+            parsedimports += f"import {item}\n"
+        if f.read() == parsedimports or f.read() == "":
+            f.write(parsedimports)
+        else:
+            rio("fault", "It seems you have started coding here already")
     with open(args.folder + "/prjctinfo.log", "t+w") as f:
         f.write(getPrjctInfo(args.folder))
     try:
@@ -224,29 +238,15 @@ def newProject(args):
                 inspect.getsource(rio) + "\n" + inspect.getsource(UnknownOptionError),
             )
         )
-    codeworkspace = input(
-        f"{Back.YELLOW+Fore.BLACK} INPUT {Back.RESET+Fore.RESET} Would you like a VS Code workspace(Y/n)? "
-    )
-    cls()
-    match codeworkspace.lower():
-        case "y":
-            rio("info", "Attempting Code workspace generation")
-            with open(
-                os.path.join(args.folder, "codeworkspace.code-workspace"), "t+w"
-            ) as f:
-                f.write(
-                    Resources.getresource("codeworkspace.code-workspace").replace(
-                        "gid912", args.folder
-                    )
-                )
-            rio("info", "Completed workspace generation")
-            exit()
-        case "n":
-            cls()
-            rio("info", "Will not generate")
-            exit()
-        case _:
-            raise UnknownOptionError("Unknown option for VS Code workspace generation")
+    rio("info", "Attempting Code workspace generation")
+    with open(os.path.join(args.folder, "codeworkspace.code-workspace"), "t+w") as f:
+        f.write(
+            Resources.getresource("codeworkspace.code-workspace").replace(
+                "gid912", args.folder
+            )
+        )
+    rio("info", "Completed workspace generation")
+    exit()
 
 
 def deletePrjct(args):

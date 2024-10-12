@@ -1,0 +1,8 @@
+{
+    "libraries": [
+        "colorama",
+        "pylogger",
+        "random",
+        "os"
+    ]
+}

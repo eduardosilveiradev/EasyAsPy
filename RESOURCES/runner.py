@@ -3,6 +3,7 @@ import sys
 import shutil
 from typing import Any
 from colorama import Fore, Back, init
+
 cls = lambda: os.system("cls" if os.name == "nt" else "clear")
 columns = shutil.get_terminal_size().columns
 
@@ -16,8 +17,9 @@ for i in _dirs:
 
 cls()
 rio("info", f"Found existing directories in project folder")
-print("\n"+" Directories ".center(columns, "=")+f"\n{"\n".join(dirs.split("\\"))}")
-print(" Directories ".center(columns, "=")+"\n")
+parseddirs = dirs.split("\\")
+for i in parseddirs:
+    print(i)
 rio("info", "Locating 'main.py'...")
 if os.path.exists("../gid912/main.py"):
     rio("info", "Located 'main.py'")
