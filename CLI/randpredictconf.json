@@ -3,6 +3,7 @@
         "colorama",
         "pylogger",
         "random",
-        "os"
+        "os",
+        "time"
     ]
 }

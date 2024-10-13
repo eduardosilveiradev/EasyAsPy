@@ -215,14 +215,6 @@ def newProject(args):
         f.write(
             Resources.getresource("defaultprojectcli").replace("gid912", args.folder)
         )
-    with open(args.folder + "/main.py", "t+w") as f:
-        parsedimports = ""
-        for item in alllibraries:
-            parsedimports += f"import {item}\n"
-        if f.read() == parsedimports or f.read() == "":
-            f.write(parsedimports)
-        else:
-            rio("fault", "It seems you have started coding here already")
     with open(args.folder + "/prjctinfo.log", "t+w") as f:
         f.write(getPrjctInfo(args.folder))
     try:
