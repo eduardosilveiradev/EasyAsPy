@@ -16,7 +16,7 @@ mlg = pylogger.Logger(__file__.replace(r"\easyaspy.py", r"\logs\clilog.log"), "M
 init()
 cls = lambda: os.system("cls" if os.name == "nt" else "clear")
 """
-This is an internal library DO NOT USE unless you want all your projects to break
+This is an internal library DO NOT MODIFY unless you want all your projects to break
 """
 
 defaultpath = __file__.replace("CLI\\easyaspy.py", "")
