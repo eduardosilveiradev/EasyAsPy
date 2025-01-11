@@ -180,6 +180,7 @@ def newProject(args):
                 libraries.append(e)
             else:
                 continue
+    _load("Parsing libraries", "libraries", len(alllibraries))
     for item in libraries:
         if not libraries.index(item) == len(libraries) - 1:
             libs += item + ", "
@@ -250,16 +251,18 @@ def newProject(args):
                 inspect.getsource(rio) + "\n" + inspect.getsource(UnknownOptionError),
             )
         )
-        print("Please wait...", end="\r", flush=True)
-        time.sleep(2)
-        _load("Creating mngprjct.py", "b", grabPath("defaultprojectcli.py"))
+        _load(
+            "Creating mngprjct.py",
+            "bytes",
+            os.stat(grabPath("defaultprojectcli.py")).st_size,
+        )
 
     with open(args.folder + "/prjctinfo.log", "t+w") as f:
         f.write(getPrjctInfo(args.folder) + "\n\n" + open("logs/clilog.log").read())
         _load(
             "Creating prjctinfo.log",
             "bytes",
-            4096 if f"{args.folder}\\prjctinfo.log" == 4096 else os.stat(path).st_size,
+            f.tell(),
         )
     try:
         os.mkdir(os.path.join(args.folder, "resources"))
