@@ -8,11 +8,11 @@ import stat
 import logging as lg
 import loading
 from pynput import keyboard
-import pylogger
+from pylogger import Logger
 from typing import Any
 from colorama import Fore, Back, init
 
-mlg = pylogger.Logger(__file__.replace(r"\easyaspy.py", r"\logs\clilog.log"), "Main")
+mlg = Logger(__file__.replace(r"\easyaspy.py", r"\logs\clilog.log"), "Main")
 init()
 cls = lambda: os.system("cls" if os.name == "nt" else "clear")
 """
@@ -53,7 +53,7 @@ def getPrjctInfo(folder):
             pyversion += item
         else:
             break
-    return f"Project name: {folder}\nPython version: {pyversion}"
+    return f"Project name: {folder} | Python version: {pyversion}"
 
 
 @mlg.logdec
