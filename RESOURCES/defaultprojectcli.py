@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+from typing import Any
 from colorama import Fore, Back, init
 
 """###################################################################################################################################################################################################################
@@ -28,31 +29,20 @@ def parsermanager(args):
                 compilestring = f"pyinstaller --onefile {__file__.replace('gid912/mngprjct.py', '')}"
                 os.system(compilestring)
             except Exception as e:
-                rprint("error", f"Exception: {e}")
+                rio("error", f"Exception: {e}")
         case "run":
             runpath = grabpath("runner")
             print(runpath)
             os.system(f"python {runpath}")
         case _:
-            rprint("error", "Unknown command")
+            rio("error", "Unknown command")
 
 
 def grabinfo(args, project="gid912"):
     print(open("prjctinfo.log", "r").read())
 
 
-def rprint(mode: str, content):
-    cls()
-    match mode.lower():
-        case "info":
-            print(f"{Fore.GREEN}INFO: {Fore.RESET}" + content)
-            return
-        case "error":
-            print(f"{Fore.RED}ERROR: {Fore.RESET}" + content)
-            return
-        case "fault":
-            print(f"{Fore.YELLOW}FAULT: {Fore.RESET}" + content)
-            return
+"gid102"
 
 
 def main():

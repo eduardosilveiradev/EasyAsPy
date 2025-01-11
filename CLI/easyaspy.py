@@ -12,8 +12,7 @@ import pylogger
 from typing import Any
 from colorama import Fore, Back, init
 
-mlg = pylogger.Logger()
-mlg.init(__file__.replace(r"\easyaspy.py", r"\logs\clilog.log"), "Main")
+mlg = pylogger.Logger(__file__.replace(r"\easyaspy.py", r"\logs\clilog.log"), "Main")
 init()
 cls = lambda: os.system("cls" if os.name == "nt" else "clear")
 """
@@ -34,7 +33,7 @@ def rmv_hdn_fl(func, path, exc_info):
 
 @mlg.logdec
 def grabPath(id):
-    return defaultpath + f"RESOURCES\\{id}.py"
+    return defaultpath + f"RESOURCES\\{id}"
 
 
 class Resources:
@@ -177,6 +176,7 @@ def newProject(args):
         else:
             install(item, args.folder)
             rio("info", f"Reinstalled library {item}")
+
     try:
         os.mkdir(args.folder)
         createmsg = f"Project {args.folder} generated"
@@ -213,7 +213,12 @@ def newProject(args):
             rio("info", createmsg)
     with open(args.folder + "/mngprjct.py", "t+w") as f:
         f.write(
-            Resources.getresource("defaultprojectcli").replace("gid912", args.folder)
+            Resources.getresource("defaultprojectcli.py")
+            .replace("gid912", args.folder)
+            .replace(
+                '"gid102"',
+                inspect.getsource(rio) + "\n" + inspect.getsource(UnknownOptionError),
+            )
         )
     with open(args.folder + "/prjctinfo.log", "t+w") as f:
         f.write(getPrjctInfo(args.folder))
@@ -223,7 +228,7 @@ def newProject(args):
         pass
     with open(os.path.join(args.folder, "resources") + "\\runner.py", "t+w") as f:
         f.write(
-            Resources.getresource("runner")
+            Resources.getresource("runner.py")
             .replace("gid912", args.folder)
             .replace(
                 '"gid102"',
