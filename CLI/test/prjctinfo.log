@@ -1,1 +1,13 @@
 Project name: test | Python version: 3.12.1 
+
+From 'easyaspy.py | Main' at [05:16:08 PM January 11      2025 Saturday]               Executing function 'newProject'
+From 'easyaspy.py | Main' at [05:16:08 PM January 11      2025 Saturday]               Executing function 'parsecfg'
+From 'easyaspy.py | Main' at [05:16:08 PM January 11      2025 Saturday]               Function completed with return '{'libraries': ['colorama', 'pylogger']}'
+From 'easyaspy.py | Main' at [05:16:42 PM January 11      2025 Saturday]               Executing function 'install'
+From 'easyaspy.py | Main' at [05:16:42 PM January 11      2025 Saturday]               Function completed with return 'None'
+From 'easyaspy.py | Main' at [05:16:44 PM January 11      2025 Saturday]               Executing function 'install'
+From 'easyaspy.py | Main' at [05:16:44 PM January 11      2025 Saturday]               Function completed with return 'None'
+From 'easyaspy.py | Main' at [05:16:44 PM January 11      2025 Saturday]               Executing function 'grabDefault'
+From 'easyaspy.py | Main' at [05:16:44 PM January 11      2025 Saturday]               Function completed with return 'True'
+From 'easyaspy.py | Main' at [05:16:48 PM January 11      2025 Saturday]               Executing function 'getPrjctInfo'
+From 'easyaspy.py | Main' at [05:16:48 PM January 11      2025 Saturday]               Function completed with return 'Project name: test | Python version: 3.12.1 '

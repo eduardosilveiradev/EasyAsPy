@@ -1,5 +1,6 @@
 import argparse
 import os
+import random
 import sys
 import json
 import shutil
@@ -7,6 +8,7 @@ import inspect
 import stat
 import logging as lg
 import loading
+import time
 from pynput import keyboard
 from pylogger import Logger
 from typing import Any
@@ -128,12 +130,45 @@ def install(lib: str, dest: str):
         return
 
 
+def _load(name, unit, pos):
+    loader = loading.Loading(
+        name,
+        unit,
+        pos,
+    )
+    for i in range(100):
+        time.sleep(random.randint(0, 4) / 100)
+        loader.prender(i)
+    print("\n")
+
+
+def load(name, dest=4096):
+    path = sys.path
+    path = path[5]
+    path = f"{path}\\{dest}"
+    _load(
+        name,
+        "bytes",
+        4096 if dest == 4096 else os.stat(path).st_size,
+    )
+
+
 @mlg.logdec
 def newProject(args):
     parsedcfg = parsecfg(args.cfg)
     libs = ""
     libraries = []
     alllibraries = []
+    crctname = input(f"Project name is '{args.folder}' is this correct(Y/n)? ")
+    match crctname.lower():
+        case "y":
+            pass
+        case "n":
+            print("Closing")
+            exit()
+        case _:
+            print("Invalid input")
+            exit()
     for i in parsedcfg["libraries"]:
         path = sys.path
         path = path[5]
@@ -165,9 +200,9 @@ def newProject(args):
         "Note: Some libraries may be built-in to Python so they were not installed",
     )
     for item in libraries:
+        load(f"Installing {item}", f"{item}\\__init__.py")
         if item not in os.listdir(args.folder + "/libraries") and args.r is None:
             install(item, args.folder)
-            rio("info", f"Installed library {item}")
         elif item in os.listdir(args.folder + "/libraries") and args.r is None:
             rio(
                 "fault",
@@ -175,12 +210,9 @@ def newProject(args):
             )
         else:
             install(item, args.folder)
-            rio("info", f"Reinstalled library {item}")
 
     try:
         os.mkdir(args.folder)
-        createmsg = f"Project {args.folder} generated"
-        rio("info", createmsg)
     except FileExistsError:
         createmsg = f"Project {args.folder} regenerated"
         if not grabDefault("regen_project"):
@@ -209,8 +241,6 @@ def newProject(args):
                     rio("info", "Added default")
                 case _:
                     raise UnknownOptionError("Unknown option for project regeneration")
-        else:
-            rio("info", createmsg)
     with open(args.folder + "/mngprjct.py", "t+w") as f:
         f.write(
             Resources.getresource("defaultprojectcli.py")
@@ -220,8 +250,17 @@ def newProject(args):
                 inspect.getsource(rio) + "\n" + inspect.getsource(UnknownOptionError),
             )
         )
+        print("Please wait...", end="\r", flush=True)
+        time.sleep(2)
+        _load("Creating mngprjct.py", "b", grabPath("defaultprojectcli.py"))
+
     with open(args.folder + "/prjctinfo.log", "t+w") as f:
-        f.write(getPrjctInfo(args.folder))
+        f.write(getPrjctInfo(args.folder) + "\n\n" + open("logs/clilog.log").read())
+        _load(
+            "Creating prjctinfo.log",
+            "bytes",
+            4096 if f"{args.folder}\\prjctinfo.log" == 4096 else os.stat(path).st_size,
+        )
     try:
         os.mkdir(os.path.join(args.folder, "resources"))
     except FileExistsError:
@@ -235,14 +274,13 @@ def newProject(args):
                 inspect.getsource(rio) + "\n" + inspect.getsource(UnknownOptionError),
             )
         )
-    rio("info", "Attempting Code workspace generation")
+    load("Creating codeworkspace.code-workspace")
     with open(os.path.join(args.folder, "codeworkspace.code-workspace"), "t+w") as f:
         f.write(
             Resources.getresource("codeworkspace.code-workspace").replace(
                 "gid912", args.folder
             )
         )
-    rio("info", "Completed workspace generation")
     exit()
 
 
