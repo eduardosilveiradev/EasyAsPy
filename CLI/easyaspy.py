@@ -277,7 +277,11 @@ def newProject(args):
                 inspect.getsource(rio) + "\n" + inspect.getsource(UnknownOptionError),
             )
         )
-    load("Creating codeworkspace.code-workspace")
+    _load(
+        "Creating codeworkspace.code-workspace",
+        "bytes",
+        os.stat(grabPath("codeworkspace.code-workspace")).st_size,
+    )
     with open(os.path.join(args.folder, "codeworkspace.code-workspace"), "t+w") as f:
         f.write(
             Resources.getresource("codeworkspace.code-workspace").replace(
