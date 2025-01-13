@@ -1,3 +1,3 @@
-From 'easyaspy.py | Main' at [02:02:31 PM January 12      2025 Sunday]               Executing function 'newProject'
-From 'easyaspy.py | Main' at [02:02:31 PM January 12      2025 Sunday]               Executing function 'parsecfg'
-From 'easyaspy.py | Main' at [02:02:31 PM January 12      2025 Sunday]               Function completed with return '{'libraries': ['colorama', 'pylogger']}'
+From 'easyaspy.py | Main' at [05:58:16 PM January 13      2025 Monday]               Executing function 'newProject'
+From 'easyaspy.py | Main' at [05:58:16 PM January 13      2025 Monday]               Executing function 'parsecfg'
+From 'easyaspy.py | Main' at [05:58:16 PM January 13      2025 Monday]               Function completed with return '{'libraries': ['colorama', 'pylogger']}'

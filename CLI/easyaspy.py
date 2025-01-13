@@ -12,6 +12,7 @@ import time
 from pynput import keyboard
 from pylogger import Logger
 from typing import Any
+import pyinputplus as pyip
 from colorama import Fore, Back, init
 
 mlg = Logger(__file__.replace(r"\easyaspy.py", r"\logs\clilog.log"), "Main")
@@ -159,28 +160,30 @@ def newProject(args):
     libs = ""
     libraries = []
     alllibraries = []
-    print(" Confirm project info ".center(shutil.get_terminal_size().columns, "─"))
+    columns = shutil.get_terminal_size().columns
+
+    print("╭" + " Confirm project info ".center(columns - 2, "─") + "╮")
+    print(f"│{"".center(columns - 2)}│")
+    print(f"│{f" Project name({args.folder}) ".center(columns - 2, " ")}│")
+    print(f"│{f" Project config file({args.cfg}) ".center(columns - 2, " ")}│")
     print(
-        f" Project name({args.folder}) ".center(shutil.get_terminal_size().columns, "─")
+        f"│{f"Regenerate project({'True' if args.r == 'all' else 'False'})".center(
+            columns - 2, " "
+        )}│"
     )
-    print(
-        f" Project config file({args.cfg}) ".center(
-            shutil.get_terminal_size().columns, "─"
-        )
-    )
-    print(
-        f"Regenerate project({'True' if args.r == 'all' else 'False'})".center(
-            shutil.get_terminal_size().columns, "─"
-        )
-    )
+    print(f"│{"".center(columns - 2)}│")
+    print("╰" + "".center(columns - 2, "─") + "╯")
     print("\n")
-    crctname = input(f"Confirm project info(Y/n)? ")
+    crctname = pyip.inputMenu(
+        ["Confirm", "Exit"], numbered=True, prompt=f"Choose{Fore.LIGHTBLUE_EX}\n\n"
+    )
+    print(Fore.RESET)
     cls()
     match crctname.lower():
-        case "y":
+        case "confirm":
             pass
-        case "n":
-            print("Closing")
+        case "exit":
+            print("Exited")
             exit()
         case _:
             print("Invalid input")

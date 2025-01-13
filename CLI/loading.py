@@ -23,6 +23,7 @@ class Loading:
 
         init()
         filler = "━"
+        colorfiller = "-"
         time = time + 1
         timedisp = ((time) / 100) * self.maxtime
         # str(filler * round((time * 3)/(self.maxtime / 2))) + "".center(120 - round((time * 3)/(self.maxtime / 2)))
@@ -32,7 +33,8 @@ class Loading:
             + " | "
             + Fore.BLUE
             + "".center(time, filler)
-            + "".center(100 - time)
+            + Fore.LIGHTBLACK_EX
+            + "".center(100 - time, colorfiller)
             + Fore.WHITE
             + " |       "
             + Fore.GREEN
