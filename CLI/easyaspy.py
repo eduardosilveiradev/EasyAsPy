@@ -159,7 +159,23 @@ def newProject(args):
     libs = ""
     libraries = []
     alllibraries = []
-    crctname = input(f"Project name is '{args.folder}' is this correct(Y/n)? ")
+    print(" Confirm project info ".center(shutil.get_terminal_size().columns, "─"))
+    print(
+        f" Project name({args.folder}) ".center(shutil.get_terminal_size().columns, "─")
+    )
+    print(
+        f" Project config file({args.cfg}) ".center(
+            shutil.get_terminal_size().columns, "─"
+        )
+    )
+    print(
+        f"Regenerate project({'True' if args.r == 'all' else 'False'})".center(
+            shutil.get_terminal_size().columns, "─"
+        )
+    )
+    print("\n")
+    crctname = input(f"Confirm project info(Y/n)? ")
+    cls()
     match crctname.lower():
         case "y":
             pass
