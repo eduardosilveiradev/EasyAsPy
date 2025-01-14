@@ -40,7 +40,9 @@ class Loading:
             + Fore.GREEN
             + f"{timedisp:0.2f}"
             + "/"
+            + "\033[1m"  # Start bold text
             + f"{self.maxtime:0.2f}"
+            + "\033[0m"  # End bold text
             + " "
             + self.unit
         )

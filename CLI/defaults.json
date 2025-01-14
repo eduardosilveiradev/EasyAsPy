@@ -1,1 +1,1 @@
-{"defaults": ["regen_project"]}
+{"defaults": {"regen_project": true}}

@@ -175,7 +175,9 @@ def newProject(args):
     print("╰" + "".center(columns - 2, "─") + "╯")
     print("\n")
     crctname = pyip.inputMenu(
-        ["Confirm", "Exit"], numbered=True, prompt=f"Choose{Fore.LIGHTBLUE_EX}\n\n"
+        ["Confirm", f"Exit{Fore.LIGHTBLUE_EX}"],
+        numbered=True,
+        prompt=f"Choose{Fore.RESET}\n\n",
     )
     print(Fore.RESET)
     cls()
@@ -199,6 +201,7 @@ def newProject(args):
                 libraries.append(e)
             else:
                 continue
+    print()
     _load("Parsing libraries", "libraries", len(alllibraries))
     for item in libraries:
         if not libraries.index(item) == len(libraries) - 1:
@@ -219,6 +222,7 @@ def newProject(args):
         "info",
         "Note: Some libraries may be built-in to Python so they were not installed",
     )
+    print()
     for item in libraries:
         load(f"Installing {item}", f"{item}\\__init__.py")
         if item not in os.listdir(args.folder + "/libraries") and args.r is None:
@@ -230,37 +234,13 @@ def newProject(args):
             )
         else:
             install(item, args.folder)
-
+    rio("info", "Finished installing libraries")
+    print()
     try:
         os.mkdir(args.folder)
     except FileExistsError:
-        createmsg = f"Project {args.folder} regenerated"
-        if not grabDefault("regen_project"):
-            rio(
-                "error",
-                f"Project '{args.folder}' already exists. Regenerating will NOT clear project content",
-            )
-            proceed = input(
-                f"{Fore.BLACK+Back.BLUE} INPUT {Fore.RESET+Back.RESET} Proceed(Y/n/default)? "
-            )
-            match proceed.lower():
-                case "y":
-                    rio("info", createmsg)
-                case "n":
-                    exit()
-                case "default":
-                    try:
-                        with open("defaults.json", "r") as f:
-                            parsed = json.loads(f.read())
-                        parsed["defaults"].append("regen_project")
-                        with open("defaults.json", "w") as f:
-                            f.write(json.dumps(parsed))
-                    except OSError or FileNotFoundError:
-                        rio("error", "Could not add default")
-                        return
-                    rio("info", "Added default")
-                case _:
-                    raise UnknownOptionError("Unknown option for project regeneration")
+        if not args.r:
+            pass
     with open(args.folder + "/mngprjct.py", "t+w") as f:
         f.write(
             Resources.getresource("defaultprojectcli.py")
@@ -275,7 +255,13 @@ def newProject(args):
             "bytes",
             os.stat(grabPath("defaultprojectcli.py")).st_size,
         )
-
+    try:
+        with open(os.path.join(args.folder, "main.py"), "w") as main_file:
+            if not os.path.exists(os.path.join(args.folder, "main.py")):
+                with open(os.path.join(args.folder, "main.py"), "w") as main_file:
+                    main_file.write("")
+    except FileExistsError:
+        pass
     with open(args.folder + "/prjctinfo.log", "t+w") as f:
         f.write(getPrjctInfo(args.folder) + "\n\n" + open("logs/clilog.log").read())
         _load(
@@ -307,6 +293,7 @@ def newProject(args):
                 "gid912", args.folder
             )
         )
+    rio("info", "Task completed")
     exit()
 
 
@@ -321,7 +308,7 @@ def deletePrjct(args):
         exit()
     while delete != args.folder:
         cls()
-        delete = rio("input", "Input your projects name to delete: ")
+        delete = rio("input", f"Input your projects name({args.folder}) to delete: ")
         if delete != args.folder:
             rio("error", "Incorrect name try again")
             input()
@@ -330,7 +317,8 @@ def deletePrjct(args):
         shutil.rmtree(args.folder, onerror=rmv_hdn_fl)
         rio("info", f"Project {args.folder} deleted")
     else:
-        rio("error", f"Project {args.folder} does not exist")
+        rio("error", f"Project {args.folder} was not found")
+        rio("info", "Make sure you are executing the command in the correct path")
 
 
 def main():
