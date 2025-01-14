@@ -6,7 +6,6 @@ import json
 import shutil
 import inspect
 import stat
-import logging as lg
 import loading
 import time
 from pynput import keyboard
