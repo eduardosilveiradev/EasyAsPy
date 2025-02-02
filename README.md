@@ -3,9 +3,9 @@
 Welcome to EasyAsPy, a modern Python framework designed to simplify your development experience. Whether you're building web applications, data analysis tools, or automation scripts, EasyAsPy provides the flexibility and power you need to bring your ideas to life.
 
 ## Features
-- **User-Friendly Interface:** Easy to navigate and utilize, perfect for beginners and professionals alike.
 - **Seamless Integration:** Works effortlessly with a variety of tools and libraries for an optimized workflow.
 - **Enhanced Productivity:** Streamlines coding processes to help you focus on what matters most – your project.
+- **Enhanced logging runner** Logs every step of your programs execution at runtime
 
 ## Getting Started
 
