@@ -1,3 +1,5 @@
+Project name: terminaltor | Python version: 3.12.1 
+
 From 'easyaspy.py | Main' at [07:39:56 PM June 11      2025 Wednesday]               Executing function 'newProject'
 From 'easyaspy.py | Main' at [07:39:56 PM June 11      2025 Wednesday]               Executing function 'parsecfg'
 From 'easyaspy.py | Main' at [07:39:56 PM June 11      2025 Wednesday]               Function completed with return '{'libraries': ['colorama', 'pylogger']}'
@@ -7,5 +9,3 @@ From 'easyaspy.py | Main' at [07:40:07 PM June 11      2025 Wednesday]          
 From 'easyaspy.py | Main' at [07:40:07 PM June 11      2025 Wednesday]               Function completed with return 'C:\EasyAsPy\RESOURCES\defaultprojectcli.py'
 From 'easyaspy.py | Main' at [07:40:09 PM June 11      2025 Wednesday]               Executing function 'getPrjctInfo'
 From 'easyaspy.py | Main' at [07:40:09 PM June 11      2025 Wednesday]               Function completed with return 'Project name: terminaltor | Python version: 3.12.1 '
-From 'easyaspy.py | Main' at [07:40:11 PM June 11      2025 Wednesday]               Executing function 'grabPath'
-From 'easyaspy.py | Main' at [07:40:11 PM June 11      2025 Wednesday]               Function completed with return 'C:\EasyAsPy\RESOURCES\codeworkspace.code-workspace'

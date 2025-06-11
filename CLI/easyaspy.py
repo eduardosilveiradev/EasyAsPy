@@ -34,20 +34,21 @@ def rmv_hdn_fl(func, path, exc_info):
 
 
 @mlg.logdec
-def grabPath(id):
+def grabPath(id: str) -> str:
     return defaultpath + f"RESOURCES\\{id}"
 
 
 class Resources:
-    def getresource(id) -> str:
-        if "." not in [*id]:
+    @staticmethod
+    def getresource(id: str) -> str:
+        if "." not in id:
             return open(grabPath(id), "r").read()
         else:
             return open(os.path.join(defaultpath, "RESOURCES", id), "r").read()
 
 
 @mlg.logdec
-def getPrjctInfo(folder):
+def getPrjctInfo(folder: str) -> str:
     pyversion = ""
     vrsnlist = [*sys.version]
     for item in vrsnlist:
@@ -59,7 +60,7 @@ def getPrjctInfo(folder):
 
 
 @mlg.logdec
-def grabDefault(id) -> bool:
+def grabDefault(id: str) -> bool:
     defaultfile = open("defaults.json", "r").read()
     defaultfile = json.loads(defaultfile)
     try:
@@ -74,8 +75,8 @@ class UnknownOptionError(NameError):
     if sys.version_info >= (3, 10):
         name: str
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
-        return super().__call__(*args, **kwds)
+    def __init__(self, message: str):
+        super().__init__(message)
 
 
 def rio(mode: str, content: str):
@@ -107,17 +108,18 @@ def rio(mode: str, content: str):
 
 
 @mlg.logdec
-def parsecfg(file) -> str:
+def parsecfg(file: str) -> dict:
     try:
         with open(file, "r") as f:
             content = f.read()
-    except OSError or FileNotFoundError:
+    except (OSError, FileNotFoundError):
         raise FileNotFoundError
     try:
         parsed = json.loads(content)
         return parsed
     except Exception as e:
-        rio("Error", "Exception: " + e)
+        rio("error", "Exception: " + str(e))
+        return {}
 
 
 @mlg.logdec
@@ -130,7 +132,7 @@ def install(lib: str, dest: str):
         return
 
 
-def _load(name, unit, pos):
+def _load(name: str, unit: str, pos: int):
     loader = loading.Loading(
         name,
         unit,
@@ -142,14 +144,22 @@ def _load(name, unit, pos):
     print("\n")
 
 
-def load(name, dest=4096):
+def load(name: str, dest: str = ""):
     path = sys.path
     path = path[5]
-    path = f"{path}\\{dest}"
+    if dest == "":
+        dest_size = 4096
+    else:
+        dest_path = f"{path}\\{dest}"
+        try:
+            dest_size = os.stat(dest_path).st_size
+        except FileNotFoundError:
+            dest_size = 4096
+
     _load(
         name,
         "bytes",
-        4096 if dest == 4096 else os.stat(path).st_size,
+        dest_size,
     )
 
 
@@ -162,15 +172,12 @@ def newProject(args):
     columns = shutil.get_terminal_size().columns
 
     print("╭" + " Confirm project info ".center(columns - 2, "─") + "╮")
-    print(f"│{"".center(columns - 2)}│")
-    print(f"│{f" Project name({args.folder}) ".center(columns - 2, " ")}│")
-    print(f"│{f" Project config file({args.cfg}) ".center(columns - 2, " ")}│")
-    print(
-        f"│{f"Regenerate project({'True' if args.r == 'all' else 'False'})".center(
-            columns - 2, " "
-        )}│"
-    )
-    print(f"│{"".center(columns - 2)}│")
+    print(f"│{''.center(columns - 2)}│")
+    print(f"│{f' Project name({args.folder}) '.center(columns - 2, ' ')}│")
+    print(f"│{f' Project config file({args.cfg}) '.center(columns - 2, ' ')}│")
+    regenerate_text = f"Regenerate project({'True' if args.r == 'all' else 'False'})"
+    print(f"│{regenerate_text.center(columns - 2, ' ')}│")
+    print(f"│{''.center(columns - 2)}│")
     print("╰" + "".center(columns - 2, "─") + "╯")
     print("\n")
     crctname = pyip.inputMenu(
@@ -298,11 +305,13 @@ def newProject(args):
 
 def deletePrjct(args):
     delete = rio("input", "Are you sure you want to delete(Y/n)? ")
-    delete = delete.lower()
+    if delete is not None:
+        delete = delete.lower()
     if delete != "y":
         exit()
     delete = rio("input", "Are you really sure you want to delete(Y/n)? ")
-    delete = delete.lower()
+    if delete is not None:
+        delete = delete.lower()
     if delete != "y":
         exit()
     while delete != args.folder:
